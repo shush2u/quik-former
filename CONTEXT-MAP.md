@@ -14,21 +14,23 @@ files as features are implemented.
 
 ## Current Reality Check
 
-The product is not implemented yet. The repository currently contains a
-Vite/React starter app with a counter and starter documentation links. Most
-entries below describe planned feature areas from `PLAN.md`, not existing code.
+The product domain behavior is not implemented yet. The repository has a
+Milestone 1 PWA shell with routing, installability metadata, and offline app
+shell caching. Most feature entries below describe planned areas from
+`PLAN.md`, not existing form behavior.
 
 Implemented today:
 
-- React bootstrap in `src/main.tsx`.
-- Starter app UI in `src/App.tsx`.
-- Global and starter styles in `src/index.css` and `src/App.css`.
-- Public SVG assets in `public/`.
+- React and React Router bootstrap in `src/main.tsx`.
+- Routed app shell and placeholder routes in `src/App.tsx`.
+- Global and app shell styles in `src/index.css` and `src/App.css`.
+- Service worker registration in `src/registerServiceWorker.ts`.
+- PWA manifest, service worker, favicon, and app icons in `public/`.
 - Dependencies for React, React Router, Vite, TypeScript, Oxlint, and `pdf-lib`.
+- Service-worker installation tests using Node's built-in test runner.
 
 Not implemented yet:
 
-- App routes.
 - Form builder.
 - Form schema/types.
 - Form validation.
@@ -37,8 +39,7 @@ Not implemented yet:
 - Fill mode.
 - Response lifecycle.
 - PDF export.
-- PWA manifest/service worker.
-- Tests.
+- Product-domain and route-level tests.
 
 ## Canonical Project Context
 
@@ -46,6 +47,7 @@ Not implemented yet:
 | --- | --- |
 | `PLAN.md` | Product goal, MVP scope, planned data model, milestones. |
 | `ARCHITECTURE.md` | Current architecture state and intended module boundaries. |
+| `PWA.md` | PWA behavior, invariants, maintenance, and verification. |
 | `AGENTS.md` | Repository conventions, commands, and agent rules. |
 | `package.json` | Real scripts and installed dependencies. |
 
@@ -53,8 +55,10 @@ Not implemented yet:
 
 ### App Shell
 
-- Current code: `src/main.tsx`, `src/App.tsx`, `src/index.css`, `src/App.css`.
-- Current state: Vite starter screen only.
+- Current code: `src/main.tsx`, `src/App.tsx`, `src/registerServiceWorker.ts`,
+  `src/index.css`, `src/App.css`.
+- Current state: responsive shell with navigation and placeholder routes for
+  `/`, `/builder`, `/fill`, `/responses`, `/settings`, and `*`.
 - Planned context file: `src/CONTEXT.md` or `src/app/CONTEXT.md` once the app
   shell has real routing/layout behavior.
 - Planned responsibilities: application bootstrap, route registration, shared
@@ -191,17 +195,27 @@ Important planned behavior:
 
 ### PWA And Offline
 
-- Current code: `index.html`, `public/favicon.svg`.
-- Planned directory/files: `public/manifest.webmanifest`, service worker setup.
-- Planned context file: `public/CONTEXT.md` or `src/pwa/CONTEXT.md`.
+- Current code: `index.html`, `src/registerServiceWorker.ts`,
+  `public/manifest.webmanifest`, `public/sw.js`, `public/favicon.svg`,
+  `public/icon-192.png`, `public/icon-512.png`,
+  `tests/service-worker.test.js`.
+- Current context: `PWA.md`.
 - Planned responsibilities: installability, offline support, app icons, mobile
   behavior, caching strategy.
 
-Current gap:
+Implemented behavior:
 
-- No manifest.
-- No service worker.
-- No offline behavior.
+- Manifest uses standalone display and includes required 192px and 512px PNG
+  icons.
+- Service worker registers from `/sw.js` after page load.
+- Service worker caches the complete app shell or fails installation, removes
+  old Quik Former caches, handles navigation requests network-first with cached
+  `index.html` fallback, and handles same-origin static assets cache-first.
+- Cross-origin requests and future form data are not cached through the fetch
+  handler.
+- Production routing, service-worker control, offline nested-route reload, and
+  Chromium manifest/installability checks passed on 2026-07-19; see `PWA.md`
+  for the verification procedure and record.
 
 ### Temporary Links
 

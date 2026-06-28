@@ -9,19 +9,23 @@ current plan.
 
 ## Current Implementation State
 
-The repository is currently at the initial Vite/React scaffold stage.
+The repository now has a Milestone 1 PWA shell with basic client-side routing.
 
 - The app entry point is `src/main.tsx`.
-- The only rendered application component is `src/App.tsx`.
+- `src/main.tsx` mounts React inside React Router's `BrowserRouter` and starts
+  service worker registration.
+- `src/App.tsx` owns the small routed app shell and placeholder route views.
+- `src/registerServiceWorker.ts` registers the root service worker after page
+  load when service workers are supported.
 - Styling is global CSS in `src/index.css` and component-adjacent CSS in
   `src/App.css`.
-- Static assets currently include Vite/React starter images under `src/assets/`
-  and SVG assets under `public/`.
-- There is no implemented form schema, storage layer, routing, builder, fill
-  mode, response management, PDF export flow, service worker, or PWA manifest
-  yet.
-- There are no tests yet, and `package.json` does not currently define a
-  `test` or `format` script.
+- Static PWA assets live in `public/`, including `manifest.webmanifest`,
+  `sw.js`, favicon SVG, and PNG app icons.
+- There is no implemented form schema, storage layer, builder, fill mode,
+  response management, or PDF export flow yet.
+- Focused Vitest coverage exercises service-worker installation, activation,
+  app-shell precaching, and fetch strategies. `package.json` defines `test`, but
+  not a `format` script.
 
 ## Tech Stack
 
@@ -40,27 +44,34 @@ The repository is currently at the initial Vite/React scaffold stage.
 ```text
 .
 ├── PLAN.md                  Product direction and MVP scope.
+├── PWA.md                   PWA behavior, invariants, and verification.
 ├── AGENTS.md                Repository instructions for agents.
 ├── ARCHITECTURE.md          This architecture snapshot.
 ├── CONTEXT-MAP.md           Agent context map for features and planned docs.
 ├── public/                  Public static assets.
+│   ├── manifest.webmanifest PWA manifest.
+│   ├── sw.js                App shell service worker.
+│   └── icon-*.png           Manifest icons.
 ├── src/
-│   ├── App.tsx              Current starter UI.
-│   ├── App.css              Starter UI styles.
+│   ├── App.tsx              Routed app shell and placeholders.
+│   ├── App.css              App shell styles.
 │   ├── index.css            Global styles and CSS variables.
-│   ├── main.tsx             React root bootstrap.
+│   ├── main.tsx             React root/router bootstrap.
+│   ├── registerServiceWorker.ts
 │   └── assets/              Starter image assets.
 ├── package.json             Scripts and dependencies.
+├── tests/
+│   └── service-worker.test.js
 ├── vite.config.ts           Vite React plugin setup.
 └── tsconfig*.json           TypeScript project configuration.
 ```
 
-The intended feature directories from `AGENTS.md` do not exist yet:
+The following intended code directories from `AGENTS.md` do not exist yet:
 
 - `src/components/` for reusable UI components.
-- `src/features/` for builder, fill mode, responses, and export features.
+- `src/features/builder/`, `src/features/fill/`, `src/features/responses/`, and
+  `src/features/export/` for product feature code.
 - `src/lib/` for schema, storage, validation, migration, and PDF helpers.
-- `tests/` for integration or cross-feature tests.
 
 ## Planned Application Shape
 
@@ -112,18 +123,19 @@ The planned MVP storage is browser-local and user-controlled:
 No IndexedDB implementation exists yet. The package plan mentions Dexie as a
 possible IndexedDB wrapper, but Dexie is not currently installed.
 
-## Routing Direction
+## Routing
 
-React Router is installed but unused. The planned route surface from `PLAN.md`
-is:
+React Router is active in declarative routing mode. Implemented routes are:
 
-- Home or dashboard.
-- Builder.
-- Fill mode.
-- Responses and/or settings.
+- `/` for the home/dashboard placeholder.
+- `/builder` for the builder placeholder.
+- `/fill` for the fill mode placeholder.
+- `/responses` for the responses placeholder.
+- `/settings` for the settings placeholder.
+- `*` for a not-found placeholder with a home link.
 
-Routing should be introduced once the first real product screens replace the
-starter Vite UI.
+The route components currently live in `src/App.tsx` while they are simple
+placeholders. Move feature routes into `src/features/*` as real behavior lands.
 
 ## Export Direction
 
@@ -137,17 +149,31 @@ starter Vite UI.
 
 ## PWA Direction
 
-The app is planned as an installable offline-capable PWA. Current PWA state:
+The app has the first PWA shell implementation:
 
-- `index.html` has a favicon and viewport metadata.
-- `public/favicon.svg` exists.
-- There is no `manifest.webmanifest`.
-- There is no service worker or offline caching implementation.
+- `index.html` links `public/manifest.webmanifest`, sets theme color metadata,
+  and uses the `Quik Former` document title.
+- `public/manifest.webmanifest` declares standalone display, app colors, and
+  192px/512px PNG icons.
+- `public/sw.js` uses a versioned app cache, caches the app shell during
+  install, and fails installation if any required shell asset cannot be cached.
+  It removes old Quik Former caches during activate, serves navigation requests
+  network-first with cached `index.html` fallback, and serves same-origin static
+  assets cache-first.
+- Cross-origin requests are ignored by the service worker.
+
+The production shell, route fallback, service worker, offline reload, manifest,
+and Chromium installability checks were last verified on 2026-07-19. The exact
+procedure and results are recorded in `PWA.md`.
+
+The service worker does not cache form data. Local-first data belongs in the
+future IndexedDB storage layer.
 
 ## Testing Direction
 
-There is no test runner configured yet. When tests are introduced, they should
-cover the highest-risk domain behavior first:
+Vitest currently covers service-worker installation, activation, precache
+failure behavior, and fetch strategies. As product features are introduced,
+tests should cover the highest-risk domain behavior first:
 
 - Schema migrations.
 - Validation rules.

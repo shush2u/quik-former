@@ -29,8 +29,9 @@ Keep these commands synchronized with `package.json`:
 - `pnpm dev` to run the local Vite development server.
 - `pnpm build` to create a production build.
 - `pnpm lint` to run Oxlint.
+- `pnpm test` to run the Vitest suite.
 - `pnpm preview` to preview the production build.
-- Add `pnpm test` and `pnpm format` when test or formatting scripts are added.
+- Add `pnpm format` when a formatting script is added.
 
 ## Coding Style & Naming Conventions
 
@@ -55,6 +56,7 @@ Use concise, imperative commit messages such as `feat: add form schema validatio
 Pull requests should describe the change, list
 manual or automated checks, link related issues, and include screenshots or
 short recordings for visible UI changes.
+Do not create commits or pull requests unless explicitly prompted to do so.
 
 ## Agent-Specific Instructions
 
