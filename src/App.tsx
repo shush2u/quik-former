@@ -1,30 +1,16 @@
-import { Link, NavLink, Route, Routes } from "react-router";
-import "@/App.css";
+import { Link, Navigate, NavLink, Route, Routes } from "react-router";
+import { BuilderPage } from "@/features/builder/BuilderPage";
+import { HomePage } from "@/features/home/HomePage";
 
 const primaryRoutes = [
   { to: "/", label: "Home", end: true },
-  { to: "/builder", label: "Builder" },
+  { to: "/builder/new", label: "Builder" },
   { to: "/fill", label: "Fill" },
   { to: "/responses", label: "Responses" },
   { to: "/settings", label: "Settings" },
 ];
 
 const pageContent = {
-  home: {
-    eyebrow: "Local-first form workspace",
-    title: "Quik Former",
-    body: "Create reusable forms, fill them on this device, and keep your work ready for offline use.",
-    actions: [
-      { to: "/builder", label: "Start a form" },
-      { to: "/responses", label: "View responses" },
-    ],
-  },
-  builder: {
-    eyebrow: "Builder",
-    title: "Design reusable forms",
-    body: "This route is ready for the form builder milestone: sections, fields, options, and revision snapshots will plug in here.",
-    actions: [{ to: "/fill", label: "Preview fill mode" }],
-  },
   fill: {
     eyebrow: "Fill mode",
     title: "Complete a form",
@@ -49,25 +35,54 @@ type PageKey = keyof typeof pageContent;
 
 function App() {
   return (
-    <div className="app-shell">
-      <header className="app-header">
-        <Link className="brand" to="/" aria-label="Quik Former home">
-          <img src="/favicon.svg" alt="" width="32" height="32" />
+    <div className="flex min-h-svh flex-col">
+      <header className="sticky top-0 z-10 flex flex-col items-start gap-3.5 border-b border-border bg-surface/90 px-[clamp(18px,5vw,56px)] py-[18px] backdrop-blur-2xl nav:flex-row nav:items-center nav:justify-between nav:gap-6">
+        <Link
+          className="inline-flex min-w-max items-center gap-2.5 font-bold text-strong no-underline"
+          to="/"
+          aria-label="Quik Former home"
+        >
+          <img
+            className="size-8"
+            src="/favicon.svg"
+            alt=""
+            width="32"
+            height="32"
+          />
           <span>Quik Former</span>
         </Link>
-        <nav className="primary-nav" aria-label="Primary navigation">
+        <nav
+          className="flex flex-wrap items-center justify-start gap-1.5 nav:justify-end"
+          aria-label="Primary navigation"
+        >
           {primaryRoutes.map((route) => (
-            <NavLink key={route.to} to={route.to} end={route.end}>
+            <NavLink
+              key={route.to}
+              to={route.to}
+              end={route.end}
+              className={({ isActive }) =>
+                [
+                  "rounded-md px-2.5 py-2 text-[0.92rem] leading-none no-underline transition-colors nav:px-3",
+                  "hover:bg-control-hover hover:text-strong focus-visible:bg-control-hover focus-visible:text-strong",
+                  isActive ? "bg-accent-soft text-accent-strong" : "text-muted",
+                ].join(" ")
+              }
+            >
               {route.label}
             </NavLink>
           ))}
         </nav>
       </header>
 
-      <main className="route-surface">
+      <main className="flex-1 px-[clamp(16px,4vw,48px)] pt-[20px] pb-[140px]">
         <Routes>
-          <Route index element={<PlaceholderPage page="home" />} />
-          <Route path="builder" element={<PlaceholderPage page="builder" />} />
+          <Route index element={<HomePage />} />
+          <Route
+            path="builder"
+            element={<Navigate to="/builder/new" replace />}
+          />
+          <Route path="builder/new" element={<BuilderPage createNew />} />
+          <Route path="builder/:formId" element={<BuilderPage />} />
           <Route path="fill" element={<PlaceholderPage page="fill" />} />
           <Route
             path="responses"

@@ -14,32 +14,29 @@ files as features are implemented.
 
 ## Current Reality Check
 
-The product domain behavior is not implemented yet. The repository has a
-Milestone 1 PWA shell with routing, installability metadata, and offline app
-shell caching. Most feature entries below describe planned areas from
-`PLAN.md`, not existing form behavior.
+The repository has the Milestone 1 PWA shell and the Milestone 2 local form
+builder. Later fill, response, import/export, and PDF areas remain planned.
 
 Implemented today:
 
 - React and React Router bootstrap in `src/main.tsx`.
-- Routed app shell and placeholder routes in `src/App.tsx`.
-- Global and app shell styles in `src/index.css` and `src/App.css`.
+- Routed app shell plus real home and builder routes in `src/App.tsx`.
+- Tailwind theme/base styles in `src/index.css`, utility-first shell styling,
+  and legacy semantic application styles imported from `src/App.css` into the
+  component layer.
 - Service worker registration in `src/registerServiceWorker.ts`.
 - PWA manifest, service worker, favicon, and app icons in `public/`.
-- Dependencies for React, React Router, Vite, TypeScript, Oxlint, and `pdf-lib`.
-- Service-worker installation tests using Node's built-in test runner.
+- Versioned form domain modules, builder validation and operations.
+- Dexie-backed mutable drafts and immutable form revisions.
+- Responsive builder UI, autosave, movement, confirmations, and preview.
+- Vitest coverage using Testing Library, jsdom, and fake IndexedDB.
 
 Not implemented yet:
 
-- Form builder.
-- Form schema/types.
-- Form validation.
-- Local storage/IndexedDB.
 - JSON import/export.
 - Fill mode.
 - Response lifecycle.
 - PDF export.
-- Product-domain and route-level tests.
 
 ## Canonical Project Context
 
@@ -57,8 +54,9 @@ Not implemented yet:
 
 - Current code: `src/main.tsx`, `src/App.tsx`, `src/registerServiceWorker.ts`,
   `src/index.css`, `src/App.css`.
-- Current state: responsive shell with navigation and placeholder routes for
-  `/`, `/builder`, `/fill`, `/responses`, `/settings`, and `*`.
+- Current state: responsive shell with a local form library at `/`, real
+  `/builder/new` and `/builder/:formId` routes, and placeholders for fill,
+  responses, and settings.
 - Planned context file: `src/CONTEXT.md` or `src/app/CONTEXT.md` once the app
   shell has real routing/layout behavior.
 - Planned responsibilities: application bootstrap, route registration, shared
@@ -66,8 +64,7 @@ Not implemented yet:
 
 ### Shared UI Components
 
-- Current code: none.
-- Planned directory: `src/components/`.
+- Current code: `src/components/ConfirmDialog.tsx` and `src/components/form/`.
 - Planned context file: `src/components/CONTEXT.md`.
 - Planned responsibilities: reusable controls, dialogs, field chrome, buttons,
   layout primitives, and shared accessibility patterns.
@@ -77,8 +74,7 @@ modules should pass data and callbacks into shared UI.
 
 ### Form Schema And Migrations
 
-- Current code: none.
-- Planned directory: `src/lib/`.
+- Current code: `src/lib/forms/`.
 - Suggested future context file: `src/lib/schema/CONTEXT.md` or
   `src/lib/CONTEXT.md`.
 - Planned responsibilities: versioned JSON schema definitions, generated ID
@@ -94,9 +90,8 @@ Important planned behavior:
 
 ### Form Builder
 
-- Current code: none.
-- Planned directory: `src/features/builder/`.
-- Planned context file: `src/features/builder/CONTEXT.md`.
+- Current code: `src/features/builder/`.
+- Current context: `src/features/builder/CONTEXT.md`.
 - Planned responsibilities: create/edit form drafts, add/edit/delete/duplicate
   sections and fields, configure options and validation settings, preview form,
   save changes as immutable revisions.
@@ -146,9 +141,8 @@ Important planned behavior:
 
 ### Local Storage
 
-- Current code: none.
-- Planned directory: `src/lib/`.
-- Suggested future context file: `src/lib/storage/CONTEXT.md`.
+- Current code: `src/lib/storage/`.
+- Current context: `src/lib/storage/CONTEXT.md`.
 - Planned responsibilities: IndexedDB access, autosave, save/load forms,
   save/load response drafts and submitted responses, import conflict handling.
 

@@ -1,73 +1,3 @@
-.app-shell {
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-}
-
-.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 18px clamp(18px, 5vw, 56px);
-  border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
-  backdrop-filter: blur(16px);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-width: max-content;
-  color: var(--text-strong);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.brand img {
-  width: 32px;
-  height: 32px;
-}
-
-.primary-nav {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.primary-nav a {
-  color: var(--text-muted);
-  text-decoration: none;
-  border-radius: 6px;
-  padding: 8px 12px;
-  font-size: 0.92rem;
-  line-height: 1;
-}
-
-.primary-nav a:hover,
-.primary-nav a:focus-visible {
-  color: var(--text-strong);
-  background: var(--control-hover);
-}
-
-.primary-nav a.active {
-  color: var(--accent-strong);
-  background: var(--accent-soft);
-}
-
-.route-surface {
-  flex: 1;
-  display: grid;
-  align-items: center;
-  padding: clamp(36px, 8vw, 96px) clamp(18px, 5vw, 56px);
-}
-
 .placeholder-page {
   width: min(760px, 100%);
 }
@@ -120,22 +50,531 @@
   background: var(--accent-strong);
 }
 
+.home-page,
+.builder-workspace,
+.route-state {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.home-hero,
+.builder-toolbar,
+.preview-notice,
+.section-heading,
+.field-summary,
+.save-panel,
+.form-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.home-hero h1,
+.form-metadata h1,
+.form-renderer h1,
+.route-state h1 {
+  max-width: none;
+  margin: 0;
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  line-height: 1;
+}
+
+.form-library {
+  display: grid;
+  gap: 14px;
+  padding: 0;
+  margin: 40px 0 0;
+  list-style: none;
+}
+
+.card,
+.preview-surface,
+.save-panel,
+.empty-library,
+.route-state {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.form-summary,
+.empty-library,
+.route-state {
+  padding: 24px;
+}
+
+.form-summary h2,
+.empty-library h2,
+.route-state h2,
+.confirm-dialog h2 {
+  margin: 0 0 4px;
+  color: var(--text-strong);
+}
+
+.form-summary p,
+.form-summary time,
+.empty-library p,
+.route-state p {
+  color: var(--text-muted);
+}
+
+.empty-library {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button,
+.text-button,
+.mode-toggle button,
+.field-type-grid button,
+.move-controls button,
+.option-row button,
+.field-chooser summary {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.primary-button {
+  color: white;
+  background: var(--accent);
+}
+
+.secondary-button,
+.mode-toggle button,
+.field-type-grid button,
+.move-controls button,
+.option-row button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-strong);
+  background: var(--control-hover);
+  text-decoration: none;
+}
+
+.danger-button {
+  color: white;
+  background: #ba2d3a;
+}
+
+.text-button {
+  min-height: 44px;
+  padding-inline: 8px;
+  color: var(--accent-strong);
+  background: transparent;
+}
+
+.danger-text,
+.error-message {
+  color: #ba2d3a;
+}
+
+.inline-error {
+  color: #ba2d3a;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  outline-offset: 2px;
+}
+
+.builder-toolbar {
+  margin-bottom: 24px;
+}
+
+.builder-toolbar > a {
+  color: var(--accent-strong);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.mode-toggle {
+  display: flex;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.mode-toggle button[aria-pressed="true"] {
+  color: white;
+  background: var(--accent);
+}
+
+.builder-editor {
+  width: min(820px, 100%);
+  margin: 0 auto;
+}
+
+.form-metadata,
+.section-card {
+  padding: clamp(18px, 4vw, 32px);
+}
+
+.form-metadata,
+.section-list,
+.section-card,
+.field-list,
+.field-editor,
+.option-editor,
+.form-renderer,
+.rendered-section {
+  display: grid;
+  gap: 18px;
+}
+
+.section-list {
+  margin-top: 20px;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+  color: var(--text-strong);
+  font-weight: 700;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text);
+  background: var(--surface);
+}
+
+textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.optional,
+.field-type-label span,
+.field-help,
+.section-number {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+
+.section-number {
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.field-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.field-card.dragging,
+.section-card.drop-target {
+  border-color: var(--accent);
+}
+
+.field-summary {
+  padding: 8px;
+}
+
+.drag-handle {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--text-muted);
+  background: var(--control-hover);
+  cursor: grab;
+}
+
+.field-expand {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+  border: 0;
+  padding: 6px;
+  color: var(--text);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.field-expand strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field-expand span {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  text-transform: capitalize;
+}
+
+.field-editor {
+  padding: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.field-type-label {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.checkbox-label,
+.choice-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-label input,
+.choice-control input[type="radio"],
+.choice-control input[type="checkbox"] {
+  width: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  margin: 0;
+}
+
+.constraint-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.option-row,
+.move-controls {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.option-row input {
+  flex: 1;
+}
+
+.option-row button {
+  width: 44px;
+  padding: 0;
+}
+
+.move-controls > span {
+  width: 100%;
+  color: var(--text-strong);
+  font-weight: 800;
+}
+
+.move-controls label {
+  min-width: min(100%, 220px);
+}
+
+.empty-drop-zone {
+  min-height: 72px;
+  padding: 22px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.field-chooser summary {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  list-style: none;
+}
+
+.field-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.add-section {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.save-panel {
+  position: fixed;
+  right: max(16px, 4vw);
+  bottom: 18px;
+  left: max(16px, 4vw);
+  z-index: 8;
+  padding: 14px 18px;
+}
+
+.save-panel > div {
+  display: grid;
+}
+
+.save-panel span,
+.validation-summary {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.preview-surface {
+  width: min(820px, 100%);
+  margin: 0 auto;
+  padding: clamp(18px, 4vw, 36px);
+}
+
+.preview-notice {
+  margin-bottom: 24px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+
+.rendered-section {
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.rendered-section h2,
+.rendered-field p {
+  margin: 0;
+}
+
+.rendered-field {
+  display: grid;
+  gap: 8px;
+}
+
+.rendered-field fieldset {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.author-warning,
+.validation-summary {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #7a4d00;
+  background: #fff1c7;
+}
+
+button.validation-summary {
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.signature-control canvas {
+  width: 100%;
+  max-height: 180px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  touch-action: none;
+}
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(8, 16, 27, 0.68);
+}
+
+.confirm-dialog {
+  width: min(440px, 100%);
+  padding: 24px;
+  border-radius: 16px;
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+}
+
 @media (max-width: 720px) {
-  .app-header {
-    align-items: flex-start;
+  .home-hero,
+  .field-summary,
+  .save-panel,
+  .preview-notice {
+    align-items: stretch;
     flex-direction: column;
-    gap: 14px;
   }
 
-  .primary-nav {
-    justify-content: flex-start;
+  .field-summary {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
   }
 
-  .primary-nav a {
-    padding-inline: 10px;
+  .field-summary .card-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
   }
 
-  .route-surface {
-    align-items: start;
+  .constraint-grid,
+  .field-type-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .save-panel {
+    max-height: 42svh;
+    overflow: auto;
   }
 }

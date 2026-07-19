@@ -38,10 +38,11 @@ storage, JSON import/export, conflict handling, and whole-package deletion.
   rather than a desktop-only properties sidebar.
 - Show current revision number, saved timestamp, autosave state, and draft dirty
   state. Do not add revision browsing, comparison, restoration, or deletion.
-- Keep the existing vanilla CSS approach and add small accessible shared
-  controls in `src/components/`. Do not introduce shadcn/ui or Tailwind during
-  this milestone. This deliberately avoids combining a design-system migration
-  with the first domain feature; shadcn/ui can be reconsidered separately.
+- Use Tailwind CSS as the styling foundation from Milestone 2 onward and add
+  small accessible shared controls in `src/components/`. Keep specialized
+  builder styles in Tailwind's component layer while migrating toward utility
+  classes. Do not introduce shadcn/ui during this milestone; it can be
+  reconsidered separately.
 - Add React Testing Library, `user-event`, jsdom, and fake IndexedDB support.
   Defer Playwright until workflows span the builder, fill mode, and storage.
 
@@ -81,7 +82,7 @@ storage, JSON import/export, conflict handling, and whole-package deletion.
   columns, grids, and repeatable groups.
 - File/image upload fields and legally meaningful e-signatures.
 - PDF and CSV export.
-- Tailwind, shadcn/ui, or a general shell redesign.
+- shadcn/ui or a general shell redesign.
 
 ## Domain Model
 
@@ -600,8 +601,9 @@ Milestone 2 is complete when:
 - **Schema overreach:** Do not design response, export, or conditional-logic
   shapes in this milestone. Preserve extension points through discriminated
   unions and package versioning instead.
-- **UI-system distraction:** Keep vanilla CSS and focused shared controls; do not
-  initialize Tailwind or shadcn/ui as incidental builder work.
+- **UI-system distraction:** Use Tailwind as the established styling foundation
+  while keeping focused shared controls; do not add shadcn/ui or combine this
+  milestone with a general shell redesign.
 
 ## Documentation Consulted
 
@@ -623,4 +625,3 @@ starts. This plan was prepared against:
 - React Testing Library and `user-event` setup:
   <https://testing-library.com/docs/react-testing-library/setup/> and
   <https://testing-library.com/docs/user-event/setup/>
-

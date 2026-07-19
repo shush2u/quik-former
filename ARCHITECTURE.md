@@ -9,20 +9,29 @@ current plan.
 
 ## Current Implementation State
 
-The repository now has a Milestone 1 PWA shell with basic client-side routing.
+The repository has a Milestone 1 PWA shell and a Milestone 2 local-first form
+builder.
 
 - The app entry point is `src/main.tsx`.
 - `src/main.tsx` mounts React inside React Router's `BrowserRouter` and starts
   service worker registration.
-- `src/App.tsx` owns the small routed app shell and placeholder route views.
+- `src/App.tsx` owns the routed shell. Home and builder route behavior lives in
+  `src/features/home/` and `src/features/builder/`.
 - `src/registerServiceWorker.ts` registers the root service worker after page
   load when service workers are supported.
-- Styling is global CSS in `src/index.css` and component-adjacent CSS in
-  `src/App.css`.
+- Tailwind CSS 4 is integrated through its Vite plugin. `src/index.css` owns
+  theme tokens and base styles; existing semantic application styles in
+  `src/App.css` are imported into Tailwind's component layer while new shell
+  styling uses utilities.
 - Static PWA assets live in `public/`, including `manifest.webmanifest`,
   `sw.js`, favicon SVG, and PNG app icons.
-- There is no implemented form schema, storage layer, builder, fill mode,
-  response management, or PDF export flow yet.
+- `src/lib/forms/` owns versioned form shapes, IDs, migrations, snapshots, and
+  meaningful dirty comparison.
+- `src/lib/storage/` owns Dexie schema version 1 and the builder repository.
+- The builder creates/reopens multiple drafts, autosaves incomplete work,
+  creates immutable valid revisions, and previews ephemeral answers.
+- Fill mode, response management, import/export, and PDF export are not yet
+  implemented.
 - Focused Vitest coverage exercises service-worker installation, activation,
   app-shell precaching, and fetch strategies. `package.json` defines `test`, but
   not a `format` script.
@@ -37,7 +46,10 @@ The repository now has a Milestone 1 PWA shell with basic client-side routing.
 - Oxlint is configured through the package script, with no custom lint config
   file currently present.
 - `dnd-kit` is installed for DragDrop behaviour, docs are available at https://dndkit.com/react/quickstart/
-- Prefer shad/cn UI components for basic ui like buttons, fields, etc., docs available at https://ui.shadcn.com/docs.
+- Dexie 4 provides IndexedDB persistence behind the repository seam.
+- Testing Library, jsdom, and fake IndexedDB support DOM and repository tests.
+- Tailwind CSS 4 is the styling foundation. shadcn/ui remains a separate future
+  design-system decision and is not installed.
 
 ## Current File Layout
 
@@ -53,8 +65,13 @@ The repository now has a Milestone 1 PWA shell with basic client-side routing.
 │   ├── sw.js                App shell service worker.
 │   └── icon-*.png           Manifest icons.
 ├── src/
-│   ├── App.tsx              Routed app shell and placeholders.
-│   ├── App.css              App shell styles.
+│   ├── App.tsx              Routed application shell.
+│   ├── App.css              Legacy semantic component-layer styles.
+│   ├── components/          Shared dialog and controlled form renderer.
+│   ├── features/builder/    Builder route, reducer, operations, validation.
+│   ├── features/home/       Local form library route.
+│   ├── lib/forms/           Versioned form domain and revisions.
+│   ├── lib/storage/         Dexie database and repository adapter.
 │   ├── index.css            Global styles and CSS variables.
 │   ├── main.tsx             React root/router bootstrap.
 │   ├── registerServiceWorker.ts
@@ -66,12 +83,8 @@ The repository now has a Milestone 1 PWA shell with basic client-side routing.
 └── tsconfig*.json           TypeScript project configuration.
 ```
 
-The following intended code directories from `AGENTS.md` do not exist yet:
-
-- `src/components/` for reusable UI components.
-- `src/features/builder/`, `src/features/fill/`, `src/features/responses/`, and
-  `src/features/export/` for product feature code.
-- `src/lib/` for schema, storage, validation, migration, and PDF helpers.
+The planned `src/features/fill/`, `src/features/responses/`, and
+`src/features/export/` directories do not exist yet.
 
 ## Planned Application Shape
 
@@ -109,8 +122,9 @@ architectural constraints are:
 - Exported submitted response JSON embeds the exact form revision snapshot so
   the response remains viewable and exportable if the original form is missing.
 
-No schema code exists yet. When it is added, keep schema definitions versioned
-and migration-ready from the first implementation.
+Form schema format version 1 is implemented. All stored package reads use a
+migration entry point, which currently clones version 1 and rejects unknown
+future versions.
 
 ## Storage Direction
 
@@ -120,15 +134,18 @@ The planned MVP storage is browser-local and user-controlled:
 - JSON import/export is the durable backup and manual transfer mechanism.
 - Storage helpers should not be embedded in React components.
 
-No IndexedDB implementation exists yet. The package plan mentions Dexie as a
-possible IndexedDB wrapper, but Dexie is not currently installed.
+Dexie schema version 1 stores form packages and drafts in separate tables. The
+repository interface hides transactions and Dexie records from React and the
+domain model. Response storage remains deferred.
 
 ## Routing
 
 React Router is active in declarative routing mode. Implemented routes are:
 
-- `/` for the home/dashboard placeholder.
-- `/builder` for the builder placeholder.
+- `/` for the local form library.
+- `/builder/new` for persisted draft creation.
+- `/builder/:formId` for reopening a form workspace.
+- `/builder` redirects to `/builder/new`.
 - `/fill` for the fill mode placeholder.
 - `/responses` for the responses placeholder.
 - `/settings` for the settings placeholder.
