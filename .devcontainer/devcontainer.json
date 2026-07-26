@@ -1,0 +1,31 @@
+{
+	"name": "Quik Former",
+
+	"dockerComposeFile": ["docker-compose.yml"],
+
+	"service": "quik-former",
+	"workspaceFolder": "/app",
+
+	"remoteUser": "node",
+	"updateRemoteUserUID": true,
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"formulahendry.auto-rename-tag",
+				"esbenp.prettier-vscode",
+				"dbaeumer.vscode-eslint",
+				"stylelint.vscode-stylelint",
+				"bradlc.vscode-tailwindcss",
+				"eamodio.gitlens",
+				"ms-azuretools.vscode-containers",
+				"openai.chatgpt"
+			]
+		}
+	},
+
+	"postStartCommand": {
+        "safe-directory": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+        "ssh-signing-key": "git config --global user.signingkey \"key::$(ssh-add -L | sed -n '1p')\""
+  	}
+}
